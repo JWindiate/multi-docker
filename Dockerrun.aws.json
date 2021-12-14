@@ -1,0 +1,44 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "comments": [
+                "These comments are for my own purpose and are not valid in the file format",
+                "Image property looks at Docker Hub by default"
+            ],
+            "image": "windiate/multi-client",
+            "memory": 128,
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name": "server",
+            "image": "windiate/multi-server",
+            "memory": 128,
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "worker",
+            "image": "windiate/multi-worker",
+            "memory": 128,
+            "comments": "Hostname property is optional if there is no need to connect directly to the container",
+            "essential": false
+        },
+        {
+            "name": "nginx",
+            "image": "windiate/multi-nginx",
+            "memory": 128,
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "comments": "Links property uses container definition names, not hostnames, to form links",
+            "links": ["client", "server"]
+        }
+    ]
+}
